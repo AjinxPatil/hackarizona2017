@@ -5,3 +5,5 @@ class Patient():
         self.lastname = lastname
         self.phone = ''
 
+    def set_fbtoken(self, token):
+        self.fbtoken = token
