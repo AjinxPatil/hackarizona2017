@@ -25,7 +25,7 @@ def set_user_fbtoken(utoken):
         db = client.hackaz17
         db.sentiments.insert(user.__dict__)
 
-def update_sentiment(sentiments, db):
+def calc_sentiment(sentiments, db):
     senti = Sentiment(sentiments[uid])
     newsenti = Sentiment(sentiments[uid])
     collection = db['Sentiments']
