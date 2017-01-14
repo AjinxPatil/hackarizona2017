@@ -1,22 +1,15 @@
 from sentiment import Sentiment
 from pymongo import MongoClient
+from alchemy import getDocEmotion
 
 def send_sms_sentiment(senti):
     s = Sentiment(senti[uid])
-    if senti.get('sad') is not None:
-        s.sad = senti.get('sad')
-    if senti.get('angry') is not None:
-        s.angry = senti.get('angry')
-    if senti.get('disgust') is not None:
-        s.angry = senti.get('disgust')
-    if senti.get('joy') is not None:
-        s.joy = senti.get('joy')
-    if senti.get('fear') is not None:
-        s.fear = senti.get('fear')
-    
+    text = senti.get('sms')
+    sentivals = getDocEmotion(text) 
+    copy_sentivals(s, sentivals)
     client = MongoClient()
     db = client.hackaz17
-    db.sentiments.insert(s.__dict__)
+    calc_sentiment(s, db)
 
 def calc_sentiment():
     # whenever a reco is to be made or check to see the depression rating of patient
@@ -51,3 +44,28 @@ def update_sentiment(sentiments, db):
     collection.delete_many({"user_id": sentiments[uid]})
 
     collection.insert(newsenti.__dict__)
+def copy_sentivals(s, copy):
+    s.sad = copy.get('sad') if copy.get('sad') is not None else 0
+    s.angry = copy.get('angry') if copy.get('angry') is not None else 0
+    s.angry = copy.get('disgust') if copy.get('disgust') is not None else 0
+    s.joy = copy.get('joy') if copy.get('joy') is not None else 0
+    s.fear = copy.get('fear') if copy.get('fear') is not None else 0
+
+def calc_fb_sentiment():
+    dbclient = MongoClient()
+    db = dbclient.hackaz17
+    users = db.patients.find()
+    for user in users:
+        fbtoken = user.fbtoken
+        fbclient = FbClient(fbtoken)
+        feeds = fbclient.getUserFeed(sinceDate='20161010')
+        for feed in feeds:
+            s = Sentiment(user.id)
+            sentivals = getDocEmotion(feed)
+            copy_sentivals(s, sentivals)
+            calc_sentiment(s, db)
+        aboutme = fbclient.getAboutMe()
+        sentivals = getDocEmotion(feed)
+        copy_sentivals(s, sentivals)
+        calc_sentiment(s, db)
+
