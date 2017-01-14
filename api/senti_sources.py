@@ -32,3 +32,22 @@ def set_user_fbtoken(utoken):
         db = client.hackaz17
         db.sentiments.insert(user.__dict__)
 
+def update_sentiment(sentiments, db):
+    senti = Sentiment(sentiments[uid])
+    newsenti = Sentiment(sentiments[uid])
+    collection = db['Sentiments']
+    slist = list(collection.find({"user_id" : sentiments[uid]}))
+    if not slist:
+        newsenti = sentiments   
+    else:
+        for prevsenti in collection.find({"user_id" : sentiments[uid]}):
+            newsenti.sad = prevsenti.sad * 0.5 + senti.sad * 0.5
+            newsenti.angry = prevsenti.angry * 0.5 + senti.angry * 0.5
+            newsenti.joy = prevsenti.joy * 0.5 + senti.joy * 0.5
+            newsenti.fear = prevsenti.fear * 0.5 + senti.fear * 0.5
+            newsenti.disgust = prevsenti.disgust * 0.5 + senti.disgust * 0.5
+    newsenti.score = newsenti.sad * 0.60 + newsenti.angry * 0.15 + newsenti.disgust * 0.15 + newsenti.fear * .10
+
+    collection.delete_many({"user_id": sentiments[uid]})
+
+    collection.insert(newsenti.__dict__)
