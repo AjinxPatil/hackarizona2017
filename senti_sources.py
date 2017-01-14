@@ -1,4 +1,4 @@
-from sentiment import Sentiment
+from models.sentiment import Sentiment
 from pymongo import MongoClient
 from alchemy import getDocEmotion
 
