@@ -6,6 +6,7 @@ from ms import ms_api
 
 # register the imported blueprints
 app.register_blueprint(ms_api)
+app.register_blueprint(adduser_api)
 
 @app.route('/')
 def hello_world():
