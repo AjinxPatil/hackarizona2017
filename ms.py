@@ -1,7 +1,9 @@
 import time 
 import requests
 import flask
+import json
 from flask import Blueprint
+
 
 _url = 'https://api.projectoxford.ai/emotion/v1.0/recognize'
 _key = '23bc940ac49c47c1b910b11895074610'
@@ -58,12 +60,15 @@ ms_api = Blueprint('ms_api', __name__)
 
 @ms_api.route('/postPic', methods=['POST'])
 def postPic():
-    picBinary = flask.request.form['picture']
-    json = None
-    params = None
+    for image in flask.request.files:
+        imageFile = flask.request.files[image]
+        imageFile.save('temp.jpg')
+    with open('temp.jpg', 'rb') as f:
+        picBinary = f.read()
     headers = dict()
     headers['Ocp-Apim-Subscription-Key'] = _key
     headers['Content-Type'] = 'application/octet-stream'
-    response = processRequest(json=json, data=picBinary, headers=headers, params= params)
+    response = processRequest(json=None, data=picBinary, headers=headers, params=None)
     # TODO: store in db
-    print(response)
+    # print(response)
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
