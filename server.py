@@ -17,7 +17,9 @@ def hello_world():
 
 @app.route('/postFbToken', methods=['POST'])
 def getFacebookSentiment():
-    accessToken = request.form['accessToken']
+    # print(request.data)
+    accessToken = str(request.data, "utf-8")
+    # print(accessToken)
     fbClient = FbClient(accessToken)
     relationShipStatus = fbClient.getRelationshipStatus()
     feeds = fbClient.getUserFeed()
@@ -27,10 +29,10 @@ def getFacebookSentiment():
         t.start()
     latestLikes = fbClient.getLatestLikes()
     for like in latestLikes:
-        print("Like Caption :", like)
+        # print("Like Caption :", like)
         t = threading.Thread(target=extractAndPrint, args=[like])
         t.start()
-        print(getDocEmotion(feed))
+        # print(getDocEmotion(feed))
     aboutMe = fbClient.getAboutMe()
     print("About me", aboutMe)
     print(getDocEmotion(aboutMe))

@@ -8,8 +8,11 @@ def getDocEmotion(docText):
     """ Returns a dictionary containing the sentiment of given text using alchemy api.
         Keys : sadness, anger, disgust, joy, fear
     """ 
-    response = alchemy_language.emotion(text=docText)
-    return response['docEmotions']
+    try:
+        response = alchemy_language.emotion(text=docText)
+        return response['docEmotions']
+    except:
+        return ""
 
 # print(getDocEmotion('there is no meaning or purpose left in life'))
 # print(getDocEmotion('feels awesome to meet old friends again'))

@@ -16,7 +16,7 @@ class FbClient:
         
         text = []
         for feed in feeds['data']:
-            if feed['type'] == 'link':
+            if 'type' in feed and feed['type'] == 'link':
                 text.append(feed['name'])
             if 'description' in feed:
                 text.append(feed['description'])
@@ -39,4 +39,11 @@ class FbClient:
         return likes
 
     def getAboutMe(self):
-        return self.me['bio']
+        about = self.graph.get_object("me", fields="about")
+        if about is not None:
+            print(about)
+        print(self.me.keys())
+        if 'bio' in self.me:
+            return self.me['bio']
+        elif 'about' in self.me:
+            return self.me['about']
