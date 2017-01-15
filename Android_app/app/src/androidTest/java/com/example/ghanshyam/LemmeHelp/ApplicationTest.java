@@ -1,4 +1,4 @@
-package com.example.ghanshyam.depression;
+package com.example.ghanshyam.LemmeHelp;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
