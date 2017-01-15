@@ -1,7 +1,6 @@
 import requests
 import facebook
 from datetime import datetime
-import pdb
 
 class FbClient:
     def __init__(self, token):
@@ -41,10 +40,3 @@ class FbClient:
 
     def getAboutMe(self):
         return self.me['bio']
-
-### Usage ###
-client = FbClient('ACCESS_TOKEN')
-print(client.getUserFeed(sinceDate='20161010'))
-print(client.getRelationshipStatus())
-print(client.getLatestLikes())
-print(client.getAboutMe())

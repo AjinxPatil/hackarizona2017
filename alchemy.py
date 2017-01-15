@@ -1,5 +1,4 @@
 import json
-import pdb
 from watson_developer_cloud import AlchemyLanguageV1
 
 alchemy_language = AlchemyLanguageV1(api_key='9613f41709e765d219ab414d9f9e2837e50bb0ff')

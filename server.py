@@ -3,19 +3,13 @@ app = Flask(__name__)
 
 # import other api's (blueprints)
 from ms import ms_api
-from adduser import adduser_api
-from senti_sources import senti_app
 from alchemy import getDocEmotion
-
-import json
-
 from fb import FbClient
-from alchemy import docEmotions
+import json
+import threading
 
 # register the imported blueprints
 app.register_blueprint(ms_api)
-# app.register_blueprint(adduser_api)
-# app.register_blueprint(senti_app)
 
 @app.route('/')
 def hello_world():
@@ -26,27 +20,36 @@ def getFacebookSentiment():
     accessToken = request.form['accessToken']
     fbClient = FbClient(accessToken)
     relationShipStatus = fbClient.getRelationshipStatus()
-    feeds = this.getUserFeed()
+    feeds = fbClient.getUserFeed()
     print("### SOCIAL MEDIA SENTIMENT ###")
     for feed in feeds:
-        print("Feed Post :",feed)
-        print(getDocEmotion(feed))
+        t = threading.Thread(target=extractAndPrint, args=[feed])
+        t.start()
     latestLikes = fbClient.getLatestLikes()
     for like in latestLikes:
         print("Like Caption :", like)
+        t = threading.Thread(target=extractAndPrint, args=[like])
+        t.start()
         print(getDocEmotion(feed))
     aboutMe = fbClient.getAboutMe()
     print("About me", aboutMe)
     print(getDocEmotion(aboutMe))
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
-@senti_app.route('/postSms', methods=['POST'])
+@app.route('/postSms', methods=['POST'])
 def send_sms_sentiment():
-    text = request.form['sms']
-    messageList = text.split(';')
+    messageList = str(request.data).split(';')
     print("### SMS CHAT SENTIMENT ###")
     for message in messageList:
-        sentivals = getDocEmotion(message) 
+        t = threading.Thread(target=extractAndPrint, args=[message])
+        t.start()
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+
+def extractAndPrint(message):
+    try:
+        sentivals = getDocEmotion(message)
         print(message)
         print(sentivals)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    except:
+        print()
+
