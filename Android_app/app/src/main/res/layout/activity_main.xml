@@ -7,23 +7,20 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.ghanshyam.LemmeHelp.TransparentActivity">
-    <FrameLayout
-        android:id="@+id/camPreview"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" >
-    </FrameLayout>
+    tools:context="com.example.ghanshyam.LemmeHelp.MainActivity">
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
+
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
-        android:layout_below="@+id/camPreview"
+        android:id="@+id/listView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp" />
 
+        android:layout_alignParentTop="true"
+        android:divider="@null"
+        android:dividerHeight="10dp"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"/>
 </RelativeLayout>
