@@ -70,5 +70,6 @@ def postPic():
     headers['Content-Type'] = 'application/octet-stream'
     response = processRequest(json=None, data=picBinary, headers=headers, params=None)
     # TODO: store in db
-    # print(response)
+    print("### IMAGE SENTIMENT ###")
+    print(response)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 

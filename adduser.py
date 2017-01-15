@@ -1,6 +1,6 @@
 import user_account
 from pymongo import MongoClient
-from flask import request 
+from flask import request, Blueprint
 
 client = MongoClient('localhost', 27017)
 db = client['hackaz17']

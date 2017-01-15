@@ -1,7 +1,7 @@
 from models.sentiment import Sentiment
 from pymongo import MongoClient
 from alchemy import getDocEmotion
-from flask import request
+from flask import request, Blueprint
 
 senti_app = Blueprint('senti_app', __name__)
 
@@ -12,6 +12,8 @@ def send_sms_sentiment():
         s = Sentiment(userid)
         text = request.form['sms']
         sentivals = getDocEmotion(text) 
+        print("### SMS SENTIMENT ###")
+        print(sentivals)
         copy_sentivals(s, sentivals)
         client = MongoClient()
         db = client.hackaz17
