@@ -1,23 +1,12 @@
 from flask import Flask, request
-
-import ms
-
 app = Flask(__name__)
+
+# import other api's (blueprints)
+from ms import ms_api
+
+# register the imported blueprints
+app.register_blueprint(ms_api)
 
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
-
-@app.route('/postPic', methods=['POST'])
-def postPic():
-    print(request.form)
-    picBinary = request.form['picture']
-    json = None
-    params = None
-    headers = dict()
-    headers['Ocp-Apim-Subscription-Key'] = _key
-    headers['Content-Type'] = 'application/octet-stream'
-    response = processRequest(json=json, data=picBinary, headers=headers, params= params)
-    # TODO: store in db
-    print(response)
-
