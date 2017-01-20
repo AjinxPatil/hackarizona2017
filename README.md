@@ -1,6 +1,6 @@
 # lemmehelp
 
-LemmeHelp is an application that aims to determine the likelihood of a person dealing with depression
+LemmeHelp is an application that aims to determine the likelihood of a person dealing with depression.
 It collects data from facebook and SMS data from smartphones to do sentiment analysis. 
 It also does sentiment analysis on facial images.
 
